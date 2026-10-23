@@ -1,4 +1,11 @@
-l<title>Thư gửi Quyên</title>
+<!doctype html>
+<html lang="vi">
+<meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, viewport-fit=cover"
+/>
+<title>Thư gửi Quyên</title>
 <meta name="claude:viewport-fit-sides" content="cover" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -50,6 +57,7 @@ l<title>Thư gửi Quyên</title>
     height: 100%;
   }
   body {
+    margin: 0;
     background: var(--bg);
     color: var(--ink);
     font-family: var(--body);
@@ -599,7 +607,7 @@ l<title>Thư gửi Quyên</title>
       title: "Những <em>tâm sự</em> cuối",
       text: [
         "Nhưng mà chị ơi... chị cứ kệ em đi được không !!",
-        "Đến 1 lúc nào đấy em không thể theo chị được nữa thỳ em sẽ tự đi (Nhưng mà chị cứ yên tâm em sẽ không làm phiền chị, không làm ảnh hưởng đến chị, cũng sẽ không để ai biết là em thích chị.)",
+        "Đến 1 lúc nào đấy em không thể theo chị được nữa thì em sẽ tự đi (Nhưng mà chị cứ yên tâm em sẽ không làm phiền chị, không làm ảnh hưởng đến chị, cũng sẽ không để ai biết là em thích chị.)",
         "Hoặc đến khi chị thích 1 người khác rồi em đi được không..",
         "Em phiền vãi nhòn chị nhỉ.....",
         "Có lẽ cả cuộc đời em đây là lần đầu tiên mà em cố chấp đến như thế. Xin lỗi chị🥺🥺",
@@ -614,7 +622,7 @@ l<title>Thư gửi Quyên</title>
       text: ["Chị phải chọn 1 cái cho em biết chưa ! ."],
       questions: [
         {
-          q: "Cậu thích uống gì nhất?",
+          q: "Chị thích uống gì nhất?",
           options: ["Trà sữa", "Cà phê", "Nước ép", "Gì cũng được"],
           reply: "Em nhớ rồi nhé!",
         },
@@ -626,10 +634,10 @@ l<title>Thư gửi Quyên</title>
             "Xem phim",
             "Gặp bạn bè",
           ],
-          reply: "á à thỳ ra là thế .",
+          reply: "á à thì ra là thế .",
         },
         {
-          q: "Nếu 1 ngày chị nghe được câu ' làm người yêu anh nhé? ' thỳ chị sẽ trả lời như thế nào?",
+          q: "Nếu 1 ngày chị nghe được câu ' làm người yêu anh nhé? ' thì chị sẽ trả lời như thế nào?",
           options: [
             "Từ chối",
             "Không đồng ý",
@@ -661,7 +669,7 @@ l<title>Thư gửi Quyên</title>
       yesReply: "Em cũng đoán được rồi mà!!",
       noReply: "ổn mà! em không sao đâu.",
       copyNote:
-        "Chị có muốn gửi lại các câu trả lời cho em không? Không gừi cũng không sao đâu",
+        "Chị có muốn gửi lại các câu trả lời cho em không? Không gửi cũng không sao đâu",
       copyButton: "Sao chép câu trả lời",
       sign: `— Vui vẻ thôi chị nhé em không có ý gì đâu, sợ nhắn tin dài dòng chị đọc nó bị phiền ấy, nhưng ít nhất là cho em biết chị thích uống gì nhé, 😎😎`,
     },
@@ -705,7 +713,7 @@ l<title>Thư gửi Quyên</title>
       html +=
         `<figure class="photo"><div class="frame">` +
         (p.image
-          ? `<img src="${esc(p.image)}" alt="${esc(p.caption || "")}">`
+          ? `<img src="${esc(p.image)}" alt="${esc(p.caption || "")}" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=&quot;ph&quot;>Ảnh sẽ ở đây</div>'">`
           : `<div class="ph">Ảnh sẽ ở đây</div>`) +
         `</div>${p.caption ? `<figcaption>${esc(p.caption)}</figcaption>` : ""}</figure>`;
     }
@@ -737,7 +745,7 @@ l<title>Thư gửi Quyên</title>
                 )
                 .join("") +
               `</div>` +
-              `<p class="said" id="said-${qi}">${chosen !== undefined ? esc(q.reply || "Tớ nhớ rồi nhé!") : ""}</p>` +
+              `<p class="said" id="said-${qi}">${chosen !== undefined ? esc(q.reply || "Em nhớ rồi nhé!") : ""}</p>` +
               `</div>`
             );
           })
@@ -784,7 +792,7 @@ l<title>Thư gửi Quyên</title>
 
   /* Gom các câu trả lời thành một đoạn chữ để người đọc gửi lại */
   function buildAnswers() {
-    const lines = ["Câu trả lời của tớ:"];
+    const lines = ["Câu trả lời của chị:"];
     PAGES.forEach((pg, pi) => {
       if (pg.type !== "quiz") return;
       pg.questions.forEach((q, qi) => {
@@ -825,7 +833,7 @@ l<title>Thư gửi Quyên</title>
       el.parentElement
         .querySelectorAll(".opt")
         .forEach((b, i) => b.setAttribute("aria-pressed", i === oi));
-      $("said-" + qi).textContent = p.questions[qi].reply || "Tớ nhớ rồi nhé!";
+      $("said-" + qi).textContent = p.questions[qi].reply || "Em nhớ rồi nhé!";
       return;
     }
     if (act === "yes") {
@@ -846,12 +854,12 @@ l<title>Thư gửi Quyên</title>
       box.hidden = false;
       const fallback = () => {
         note.textContent =
-          "Cậu chọn đoạn chữ bên dưới rồi sao chép gửi cho tớ nhé.";
+          "Chị chọn đoạn chữ bên dưới rồi sao chép gửi cho em nhé.";
       };
       try {
         navigator.clipboard.writeText(txt).then(() => {
           note.textContent =
-            "Đã sao chép. Cậu dán vào tin nhắn gửi cho tớ nhé.";
+            "Đã sao chép. Chị dán vào tin nhắn gửi cho em nhé.";
         }, fallback);
       } catch (err) {
         fallback();
