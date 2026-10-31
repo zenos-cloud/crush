@@ -40,14 +40,12 @@ pip install -r requirements.txt
 3. Quyền: **Read** + **Trade**. Đặt passphrase (mật khẩu riêng cho API, nhớ ghi lại).
 4. Lưu lại 3 thứ: **API key**, **Secret key**, **Passphrase**.
 
-### Bước 5: Điền cấu hình
-Copy file `.env.example` thành `.env`, mở bằng Notepad và điền:
+### Bước 5: Điền cấu hình (cách dễ nhất)
 ```
-OKX_API_KEY=xxxxx
-OKX_SECRET_KEY=xxxxx
-OKX_PASSPHRASE=xxxxx
-OKX_DEMO=1
+python main.py setup
 ```
+Tool sẽ hỏi lần lượt API key, Secret key, Passphrase, tự lưu file `.env` và thử kết nối luôn.
+(Khi dán Secret key và Passphrase chữ sẽ không hiện ra, đó là bình thường.)
 
 ### Bước 6: Chạy thử trên máy tính
 ```

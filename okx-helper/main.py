@@ -1,6 +1,7 @@
 """OKX Helper - trợ lý hằng ngày cho tài khoản OKX của cậu.
 
 Cách dùng trên máy tính:
+    python main.py setup            # cài đặt nhanh (nhập key)
     python main.py balance          # xem số dư
     python main.py price BTC        # xem giá
     python main.py tasks            # xem việc hôm nay
@@ -124,8 +125,50 @@ def status_text() -> str:
             f"Giới hạn mỗi lệnh: {config.MAX_ORDER_USDT} USDT")
 
 
+# ===================== Cài đặt nhanh =====================
+def setup_wizard():
+    """Hỏi từng thông tin, tự ghi file .env rồi thử kết nối OKX."""
+    from getpass import getpass
+    from okx_client import OKXClient
+
+    print("=== Cài đặt OKX Helper ===")
+    print("Khi dán Secret key và Passphrase, chữ sẽ KHÔNG hiện ra (để bảo mật) - cứ dán rồi Enter.\n")
+    api_key = input("1) Dán API key: ").strip()
+    secret = getpass("2) Dán Secret key: ").strip()
+    passphrase = getpass("3) Gõ Passphrase: ").strip()
+    demo = input("4) Đây là key DEMO? (Enter = có, gõ n = tiền thật): ").strip().lower() != "n"
+    tg_token = input("5) Telegram bot token (Enter để bỏ qua): ").strip()
+
+    print("\n⏳ Đang thử kết nối OKX...")
+    try:
+        bal = OKXClient(api_key, secret, passphrase, demo=demo).get_balance()
+        print(f"✅ Kết nối thành công! Số dư: ${bal['total_usd']:,.2f}")
+    except Exception as e:
+        print(f"❌ Chưa kết nối được: {e}")
+        if input("Vẫn lưu cấu hình? (y/N): ").strip().lower() != "y":
+            print("Chưa lưu gì. Kiểm tra lại key rồi chạy lại: python main.py setup")
+            return 1
+
+    env_path = config.BASE_DIR / ".env"
+    template = (config.BASE_DIR / ".env.example").read_text(encoding="utf-8")
+    values = {"OKX_API_KEY": api_key, "OKX_SECRET_KEY": secret, "OKX_PASSPHRASE": passphrase,
+              "OKX_DEMO": "1" if demo else "0"}
+    if tg_token:
+        values["TELEGRAM_BOT_TOKEN"] = tg_token
+    lines = []
+    for line in template.splitlines():
+        key = line.split("=", 1)[0].strip()
+        lines.append(f"{key}={values[key]}" if key in values and "=" in line else line)
+    env_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"💾 Đã lưu vào {env_path}")
+    print("Tiếp theo: python main.py balance" + ("   hoặc   python main.py bot" if tg_token else ""))
+    return 0
+
+
 # ===================== Dòng lệnh trên máy tính =====================
 def main(argv):
+    if len(argv) > 1 and argv[1] == "setup":
+        return setup_wizard()
     cmd = argv[1] if len(argv) > 1 else "help"
     client = core.make_client()
 
